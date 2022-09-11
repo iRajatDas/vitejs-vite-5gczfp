@@ -15,9 +15,9 @@
   @apply bg-white p-2 sm:p-4 rounded-t-xl pb-2;
 }
 
-canvas#captcha {
+canvas {
   /*prevent interaction with the canvas*/
-  @apply pointer-events-none mx-auto sm:min-w-[15.625rem];
+  @apply pointer-events-none mx-auto my-10;
 }
 
 /* Typography */
