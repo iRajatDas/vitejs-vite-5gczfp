@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const Header = () => {
+  const { dispatch } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
+
+  const logOutUser = (e) => {
+    e.preventDefault();
+
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        dispatch({ type: 'LOGOUT' });
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
+
   return (
     <div className="box border-b">
       <div className="flex justify-between items-center">
@@ -21,32 +40,35 @@ const Header = () => {
             Captcha Earn
           </h1>
         </div>
-        <div className="">
-          <button
-            role="button"
-            className="text-emerald-600 flex items-center space-x-2 justify-center"
-          >
-            <span className="grid place-items-center p-2 h-8 w-8 bg-emerald-100 rounded-full ">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z"
-                  clipRule="evenodd"
-                />
-                <path
-                  fillRule="evenodd"
-                  d="M6 10a.75.75 0 01.75-.75h9.546l-1.048-.943a.75.75 0 111.004-1.114l2.5 2.25a.75.75 0 010 1.114l-2.5 2.25a.75.75 0 11-1.004-1.114l1.048-.943H6.75A.75.75 0 016 10z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </span>
-            <span className="font-medium">Login</span>
-          </button>
-        </div>
+        {currentUser && (
+          <div className="">
+            <button
+              onClick={(e) => logOutUser(e)}
+              role="button"
+              className="text-emerald-600 flex items-center space-x-2 justify-center"
+            >
+              <span className="grid place-items-center p-2 h-8 w-8 bg-emerald-100 rounded-full ">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z"
+                    clipRule="evenodd"
+                  />
+                  <path
+                    fillRule="evenodd"
+                    d="M6 10a.75.75 0 01.75-.75h9.546l-1.048-.943a.75.75 0 111.004-1.114l2.5 2.25a.75.75 0 010 1.114l-2.5 2.25a.75.75 0 11-1.004-1.114l1.048-.943H6.75A.75.75 0 016 10z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </span>
+              <span className="font-medium">Log Out</span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
