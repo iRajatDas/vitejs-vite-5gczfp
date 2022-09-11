@@ -5,8 +5,10 @@ import FAQ from './components/FAQ';
 import FillCaptcha from './components/FillCaptcha';
 import Header from './components/Header';
 import SignInWithGoogle from './components/SignInWithGoogle';
+import { app } from './firebase';
 
 const App = () => {
+  console.log(app);
   return (
     <div className="content">
       <Header />
