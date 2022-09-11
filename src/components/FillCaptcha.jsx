@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { AuthContext } from '../context/AuthContext';
 import {
   loadCaptchaEnginge,
   LoadCanvasTemplateNoReload,
@@ -6,6 +9,12 @@ import {
 } from '../lib/react-simple-captcha';
 
 const FillCaptcha = () => {
+  const CAPTCHA_LIMIT = 100;
+
+  const [userCurrentBalance, setUserCurrentBalance] = useState(0);
+  const [userCompletedCaptchaCount, setUserCompletedCaptchaCount] = useState(0);
+  const { currentUser } = useContext(AuthContext);
+
   const HandleSubmit = (e) => {
     e.preventDefault();
 
@@ -16,10 +25,24 @@ const FillCaptcha = () => {
       alert('Captcha Matched');
       loadCaptchaEnginge(6);
       document.getElementById('user_captcha_input').value = '';
+      setUserCurrentBalance((prevBalance) => prevBalance + 1);
+      setUserCompletedCaptchaCount(
+        (prevCompletedCaptchaCount) => prevCompletedCaptchaCount + 1
+      );
+      fireStoreData();
+      //window.location.reload();
     } else {
       alert('Captcha Does Not Match');
       document.getElementById('user_captcha_input').value = '';
     }
+  };
+
+  const fireStoreData = async () => {
+    await setDoc(doc(db, 'Users', currentUser.uid), {
+      name: 'Los Angelesx',
+      state: 'CA',
+      country: 'USA',
+    });
   };
 
   useEffect(() => {
@@ -30,19 +53,20 @@ const FillCaptcha = () => {
     <div className="play">
       <div className="mt-5 bg-emerald-100 w-full rounded-xl border border-emerald-200 px-4 py-3">
         <header className="flex justify-between">
-          <div className="balance font-medium flex justify-between items-center gap-x-2">
+          <div className="balance font-medium flex justify-between items-center gap-x-1">
             <span>Balance:</span>
             <span className="text-emerald-500 font-bold" id="user-balance">
-              0
+              {userCurrentBalance}
             </span>
           </div>
-          <div className="limit font-medium flex justify-between items-center gap-x-2">
-            <span>Ramains:</span>
+          <div className="limit font-medium flex justify-between items-center gap-x-1">
+            <span>Completed:</span>
             <span
               className="text-emerald-500"
               id="user-remaining-captcha-count"
             >
-              100<span className="font-bold">/100</span>
+              {userCompletedCaptchaCount}
+              <span className="font-bold">/{CAPTCHA_LIMIT}</span>
             </span>
           </div>
         </header>

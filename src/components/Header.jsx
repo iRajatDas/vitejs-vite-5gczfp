@@ -65,7 +65,7 @@ const Header = () => {
                   />
                 </svg>
               </span>
-              <span className="font-medium">Log Out</span>
+              <span className="font-medium">Logout</span>
             </button>
           </div>
         )}
