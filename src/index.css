@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.root,
+#root {
+  @apply w-full max-w-2xl h-full min-h-full mx-auto p-2 sm:py-4 sm:px-0;
+}
+
+.content {
+  @apply bg-white rounded-xl shadow-none sm:shadow-md;
+}
+
+.box {
+  @apply bg-white p-2 sm:p-4 rounded-t-xl pb-2;
+}
+
+canvas#captcha {
+  /*prevent interaction with the canvas*/
+  @apply pointer-events-none mx-auto sm:min-w-[15.625rem];
+}
+
+/* Typography */
+
+h1.heading_main,
+h2.heading_main {
+  @apply mt-6 text-[1.75rem] font-extrabold leading-9 tracking-tight text-slate-900 md:text-4xl;
+}
