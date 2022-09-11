@@ -37,11 +37,17 @@ const FillCaptcha = () => {
     }
   };
 
+  const readableTime = (miliseconds) => {
+    const date = new Date(miliseconds);
+    const readableDateTime = date.toLocaleString();
+    return readableDateTime;
+  };
+
   const fireStoreData = async () => {
     await setDoc(doc(db, 'Users', currentUser.uid), {
-      name: 'Los Angelesx',
-      state: 'CA',
-      country: 'USA',
+      name: currentUser.displayName,
+      last_login: currentUser.metaData.lastSignInTime,
+      email: currentUser.email,
     });
   };
 
