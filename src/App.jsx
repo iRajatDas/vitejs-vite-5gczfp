@@ -8,7 +8,6 @@ import SignInWithGoogle from './components/SignInWithGoogle';
 import { AuthContext } from './context/AuthContext';
 
 const App = () => {
-  // const [isSignedIn, setSignedIn] = useState(false);
   const { currentUser } = useContext(AuthContext);
   console.log(currentUser);
   return (

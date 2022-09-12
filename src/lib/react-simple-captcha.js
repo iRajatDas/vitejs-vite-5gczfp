@@ -85,6 +85,10 @@ export const loadCaptchaEnginge = (
   };
 };
 
+export const captchaValue = () => {
+  return captcha_value;
+};
+
 export const validateCaptcha = (userValue, reload = true) => {
   if (userValue != captcha_value) {
     if (reload == true) {

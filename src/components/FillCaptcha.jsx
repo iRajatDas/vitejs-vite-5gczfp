@@ -6,6 +6,7 @@ import {
   loadCaptchaEnginge,
   LoadCanvasTemplateNoReload,
   validateCaptcha,
+  captchaValue,
 } from '../lib/react-simple-captcha';
 
 const FillCaptcha = () => {
@@ -20,7 +21,7 @@ const FillCaptcha = () => {
 
     //Validate
     let user_captcha = document.getElementById('user_captcha_input').value;
-
+    console.log(captchaValue());
     if (validateCaptcha(user_captcha) == true) {
       alert('Captcha Matched');
       loadCaptchaEnginge(6);
