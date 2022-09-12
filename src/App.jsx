@@ -9,7 +9,7 @@ import { AuthContext } from './context/AuthContext';
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser);
+  // console.log(currentUser);
   return (
     <div className="content">
       <Header />

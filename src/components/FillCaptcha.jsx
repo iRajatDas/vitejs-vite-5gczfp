@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import { AuthContext } from '../context/AuthContext';
 import {
@@ -14,8 +14,9 @@ const FillCaptcha = () => {
 
   const [userCurrentBalance, setUserCurrentBalance] = useState(0);
   const [userCompletedCaptchaCount, setUserCompletedCaptchaCount] = useState(0);
+  const [userCaptchaInput, setUserCaptchaInput] = useState('');
   const { currentUser } = useContext(AuthContext);
-
+  console.log(currentUser);
   const HandleSubmit = (e) => {
     e.preventDefault();
 
@@ -45,15 +46,28 @@ const FillCaptcha = () => {
   };
 
   const fireStoreData = async () => {
-    await setDoc(doc(db, 'Users', currentUser.uid), {
-      name: currentUser.displayName,
-      last_login: currentUser.metaData.lastSignInTime,
-      email: currentUser.email,
-    });
+    // const { displayName, lastLoginAt, photoURL, email } = currentUser;
+
+    const docData = {
+      stringExample: 'Hello world!',
+      booleanExample: true,
+      numberExample: 3.14159265,
+      dateExample: Timestamp.fromDate(new Date('December 10, 1815')),
+      arrayExample: [5, true, 'hello'],
+      nullExample: null,
+      objectExample: {
+        a: 5,
+        b: {
+          nested: 'foo',
+        },
+      },
+    };
+    await setDoc(doc(db, 'users', currentUser.uid, currentUser.displayName), docData);
   };
 
   useEffect(() => {
     loadCaptchaEnginge(6);
+    setUserCaptchaInput(captchaValue());
   }, []);
 
   return (
@@ -87,6 +101,8 @@ const FillCaptcha = () => {
                 type="text"
                 placeholder="Enter Captcha Value"
                 id="user_captcha_input"
+                value={userCaptchaInput}
+                onChange={(e) => setUserCaptchaInput(e.target.value)}
                 name="user_captcha_input"
                 className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500"
               />
